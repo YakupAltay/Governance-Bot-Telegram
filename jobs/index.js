@@ -1,4 +1,4 @@
-import checkPollsJob from "./check-proposals-job.js";
+import checkPollsJob from "./check-proposals.js";
 
 export function setupJobs() {
     checkPollsJob();

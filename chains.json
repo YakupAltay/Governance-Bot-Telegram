@@ -1,0 +1,31 @@
+{
+  "chains": [
+    {
+      "name": "Osmosis",
+      "lcd": "https://lcd.osmosis.zone/",
+      "logoUrl": "https://uploads-ssl.webflow.com/62f34c32e8660c273054c17c/62fb88deb0724e6faa63376c_osmosis%20logo.png",
+      "telegramChatId": "-1001934992949",
+      "proposalUrl": "https://explorer.nodestake.top/osmosis/gov/{id}",
+      "binaryName": "osmosisd",
+      "chainId": "osmosis-1"
+    },
+    {
+      "name": "Stargaze",
+      "lcd": "https://stargaze-api.polkachu.com/",
+      "logoUrl": "https://pbs.twimg.com/profile_images/1507391623914737669/U3fR7nxh_400x400.jpg",
+      "telegramChatId": "-1001934992949",
+      "proposalUrl": "https://explorer.nodestake.top/stargaze/gov/{id}",
+      "binaryName": "starsd",
+      "chainId": "stargaze-1"
+    },
+    {
+      "name": "Quasar",
+      "lcd": "https://quasar-api.polkachu.com/",
+      "logoUrl": "https://pbs.twimg.com/profile_images/1644082508810661888/Bf-5BL32_400x400.png",
+      "telegramChatId": "-1001934992949",
+      "proposalUrl": "https://explorer.nodestake.top/quasar/gov/{id}",
+      "binaryName": "quasarnoded",
+      "chainId": "quasar-1"
+    }
+  ]
+}

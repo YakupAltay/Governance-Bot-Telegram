@@ -1,14 +1,12 @@
-import {CronJob} from "cron";
-import {Settings} from "../config/settings.js";
+import { CronJob } from "cron";
+import { Chains } from "../config/chains.js";
 import LcdClient from "../lib/lcd.js";
 import database from "../services/database.js";
-import {sendProposalToDiscord} from "../services/discord.js";
-
-const NewProposalMiliseconds = 1000 * 60 * 60 * 24 * 7;
+import { sendProposalToTelegram } from "../services/telegram.js";
 
 export default function checkProposalsJob() {
     let isRunning = false;
-    const cronJob = new CronJob('0 */5 * * * *', async () => {
+    const cronJob = new CronJob('* * * * *', async () => {
         if (isRunning) {
             console.log('checkProposalsJob is already running.');
             return;
@@ -18,7 +16,7 @@ export default function checkProposalsJob() {
         try {
             console.log('checkProposalsJob started.');
 
-            const chains = Settings['chains'];
+            const chains = Chains['chains'];
             await Promise.all(chains.map(chain => processProposals(chain)));
 
             console.log('checkProposalsJob finished.');
@@ -35,21 +33,20 @@ async function processProposals(chain) {
     try {
         const lcdClient = new LcdClient(chain.lcd);
         const proposals = await lcdClient.getProposals();
-        for (const proposal of proposals) {
-            const existProposal = await database.getExistsProposal(proposal.id, chain.name);
-            if (existProposal) {
-                continue;
-            }
 
+        proposals.forEach(async proposal => {
             // check proposal is new
-            if (proposal.submitTime.getTime() < Date.now() - NewProposalMiliseconds) {
-                console.log(`Proposal ${proposal.id} is too old.`);
-                continue;
+            if (proposal.status != 'PROPOSAL_STATUS_VOTING_PERIOD') {
+                return;
             }
 
-            await sendProposalToDiscord(proposal, chain);
-            await database.createProposal(proposal.id, chain.name);
-        }
+            try {
+                await sendProposalToTelegram(proposal, chain);
+                await database.createProposal(proposal.id, chain.name);
+            } catch (err) {
+                console.log(err);
+            }
+        });
     } catch (error) {
         console.log(`[${chain.name}] processProposals error`, error);
     }

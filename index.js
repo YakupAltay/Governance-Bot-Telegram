@@ -1,12 +1,12 @@
-import {DiscordToken} from "./config/env.js";
-import {setupDiscord} from "./services/discord.js";
+import { TelegramToken } from "./config/env.js";
+import { setupTelegram } from "./services/telegram.js";
 
-if (!DiscordToken) {
-    console.error('DISCORD_TOKEN is not set');
+if (!TelegramToken) {
+    console.error('TELEGRAM_TOKEN is not set');
     process.exit(1);
 }
 
 console.log('Starting...');
 
-console.log('Setup discord...');
-await setupDiscord(DiscordToken);
+console.log('Setting up Telegram...');
+await setupTelegram(TelegramToken);
